@@ -3,6 +3,7 @@ const express = require('express');
 const path = require('path');
 const morgan = require('morgan');
 const cors = require('cors');
+const routes = require('./routes.js');
 
 // creating an express server
 const server = express();
@@ -14,6 +15,9 @@ server.use(express.static(path.join(__dirname, '../client/dist')));
 server.use(express.json());
 server.use(cors());
 server.use(morgan('dev'));
+
+// use router
+server.use(routes);
 
 // server listening at port
 const PORT = process.env.PORT || 3000;
