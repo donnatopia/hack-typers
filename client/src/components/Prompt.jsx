@@ -1,8 +1,8 @@
 import React from 'react';
 
-const Prompt = ({ words, inputIndex }) => {
+const Prompt = ({ words, wordIndex }) => {
   const setColor = (index) => {
-    return index < inputIndex ? 'valid' : null
+    return index < wordIndex ? 'valid' : null
   }
 
   return (
