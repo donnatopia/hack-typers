@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Prompt from './Prompt.jsx';
 
 const GameInterface = ({ words }) => {
@@ -7,23 +7,35 @@ const GameInterface = ({ words }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if( input === words[inputIndex]) {
+    if(input === words[inputIndex]) {
+      console.log('valid');
       setInputIndex(inputIndex + 1);
       setInput('');
+
+      if (inputIndex + 1 === words.length) {
+        alert('finished!');
+      }
     }
+  };
+
+  const handleInput = (e) => {
+    if (e.target.value[e.target.value.length - 1] === ' ') {
+      document.forms['form'].requestSubmit();
+      return;
+    }
+    setInput(e.target.value);
   }
 
   return (
     <div id='game-interface'>
-      <Prompt words={ words } inputIndex={ inputIndex }/>
-      <form onSubmit={e => handleSubmit(e)}>
+      <form id='form' onSubmit={e => handleSubmit(e)}>
         <input
           type='text'
           value={ input }
-          onChange={e => setInput(e.target.value)}
+          onChange={e => handleInput(e)}
         />
-        <button type='submit'>Enter</button>
       </form>
+      <Prompt words={ words } inputIndex={ inputIndex }/>
     </div>
   );
 }
