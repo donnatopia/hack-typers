@@ -1,0 +1,16 @@
+// Babel is a javascript compiler that is used to convert ECMAScript 2015+ code into backwards compatible version of JS
+// Presets are collections of JS transformation that can applied to source ode
+{
+  "presets": [
+    // https://babeljs.io/docs/babel-preset-env
+    // includes plugins that enable features from the latest versions of JavaScript and automatically determine which transformations are needed based on the target environment.
+    "@babel/preset-env",
+
+    // https://babeljs.io/docs/babel-preset-react
+    // transforms React JSX syntax into regular JavaScript code that can be understood by browsers and other environments
+    ["@babel/preset-react", {
+      // automatically imports the necessary helper functions on demand
+      "runtime": "automatic"
+    }]
+  ]
+}

@@ -1,2 +1,8 @@
-# rfp2212-mvp
-Creating a Minimum Viable Product (MVP) in 2.5 days
+# MVP
+
+## Getting Started
+  ```
+  npm run build
+  npm run client-dev
+  npm run server-dev
+  ```
