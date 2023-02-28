@@ -16,5 +16,9 @@ module.exports = {
   postStat: (stats) => {
     const entry = new Stat(stats);
     return entry.save();
+  },
+
+  deleteStat: ({ _id }) => {
+    return Stat.findByIdAndDelete(_id).exec();
   }
 }

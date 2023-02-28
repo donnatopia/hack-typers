@@ -7,6 +7,7 @@ routes.get('/prompts/:id', prompts.getPrompt);
 routes.post('/prompts', prompts.addPrompt);
 
 routes.get('/stats', stats.getStats);
-routes.post('/stats', stats.postStat)
+routes.post('/stats', stats.postStat);
+routes.delete('/stats', stats.deleteStat);
 
 module.exports = routes;

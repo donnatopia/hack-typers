@@ -21,5 +21,16 @@ module.exports = {
         console.log(err);
         res.sendStatus(409);
       })
+  },
+
+  deleteStat: (req, res) => {
+    models.deleteStat(req.body)
+      .then(() => {
+        res.sendStatus(204);
+      })
+      .catch((err) => {
+        console.log(err);
+        res.sendStatus(409);
+      })
   }
 };
