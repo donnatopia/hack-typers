@@ -14,8 +14,8 @@ module.exports = {
 
   postStat: (req, res) => {
     models.postStat(req.body)
-      .then(() => {
-        res.sendStatus(201);
+      .then((result) => {
+        res.status(201).json(result);
       })
       .catch((err) => {
         console.log(err);

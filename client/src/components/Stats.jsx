@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import axios from 'axios';
 
 const Stats = ({ startTime, endTime, words, prompt, user }) => {
-  const [added, setAdded] = useState(false);
+  // toggling between adding and deleting attempt
+  const [alreadyAdded, setAlreadyAdded] = useState(false);
+  const [currentAttempt, setCurrentAttempt] = useState({});
 
   // stats
   const timeElapsed = (endTime - startTime)/1000;
@@ -17,25 +19,43 @@ const Stats = ({ startTime, endTime, words, prompt, user }) => {
     }
 
     axios(options)
-      .then(() => {
+      .then(({ data }) => {
         console.log('added to database');
+        setCurrentAttempt(data);
       })
       .catch((err) => {
         console.log('Error adding to database', err);
       })
   };
 
+  // deleting from stats database
+  const deleteAttempt = () => {
+    const options = {
+      method: 'DELETE',
+      url: '/stats',
+      data: currentAttempt
+    };
+
+    axios(options)
+      .then(() => {
+        console.log('delete from database');
+      })
+      .catch((err) => {
+        console.log('Error deleting from database', err);
+      })
+  }
+
   // handle attempt
   const handleAttempt = (e) => {
     e.preventDefault();
 
-    if (!added) {
-      // method for deleting attempt
+    if (alreadyAdded) {
+      deleteAttempt();
     } else {
       addAttempt();
     }
 
-    setAdded(!added);
+    setAlreadyAdded(!alreadyAdded);
   }
 
   return (
@@ -46,7 +66,7 @@ const Stats = ({ startTime, endTime, words, prompt, user }) => {
       <h3>Time Elapsed</h3>
       <p>{ timeElapsed } s</p>
       <button onClick={e => handleAttempt(e) }>
-        { added ? 'Remove Attempt' : 'Add Attempt' }
+        { alreadyAdded ? 'Remove Attempt' : 'Add Attempt' }
       </button>
     </div>
   );
