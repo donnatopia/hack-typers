@@ -6,6 +6,8 @@ const Options = ({ setWordIndex, setStartTime, setPrompt, prompt, total }) => {
   // previous button
   const handlePrevious = (e) => {
     setPrompt(prompt - 1);
+    setWordIndex(0);
+    setStartTime(0);
   }
 
   // redo button
@@ -17,6 +19,8 @@ const Options = ({ setWordIndex, setStartTime, setPrompt, prompt, total }) => {
   // next button
   const handleNext = (e) => {
     setPrompt(prompt + 1);
+    setWordIndex(0);
+    setStartTime(0);
   }
 
   return (
