@@ -1,0 +1,43 @@
+:root {
+  --bg-color: #323437;
+  --color1: #BB86FC;
+  --color2: #3700B3;
+  --color3: #D1D0C5;
+  --color4: grey;
+}
+
+body {
+  margin: 10vh 10vw;
+  background-color: var(--bg-color);
+  font-family: 'Courier New', monospace;
+}
+
+#title {
+  text-align: center;
+  text-transform: uppercase;
+  color: var(--color3);
+  letter-spacing: 15px;
+  text-shadow: 1px 1px 1px var(--color4);
+}
+
+#game-interface {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+}
+
+#prompt {
+  display: flex;
+  flex-wrap: wrap;
+  font-size: x-large;
+  gap: 20px;
+}
+
+.word {
+  color: var(--color4);
+}
+
+#valid {
+  color: var(--color1);
+}
