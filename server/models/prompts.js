@@ -7,8 +7,6 @@ const Prompt = mongoose.model('Prompt', new mongoose.Schema({
   difficulty: Number
 }));
 
-const count = Prompt.estimatedDocumentCount();
-
 // schema methods
 module.exports = {
   getNumberOfPrompts: () => {

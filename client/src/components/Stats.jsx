@@ -5,7 +5,7 @@ const Stats = ({ startTime, endTime, words }) => {
   const wpm = Math.floor((words.length * 60) / timeElapsed);
 
   return (
-    <div>
+    <div id='stats'>
       <h2>Stats</h2>
       <h3>WPM</h3>
       <p>{ wpm }</p>

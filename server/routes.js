@@ -1,8 +1,12 @@
 const routes = require('express').Router();
-const { getNumberOfPrompts, getPrompt, addPrompt } = require('./controllers/prompts');
+const prompts = require('./controllers/prompts');
+const stats = require('./controllers/stats');
 
-routes.get('/prompts/total', getNumberOfPrompts);
-routes.get('/prompts/:id', getPrompt);
-routes.post('/prompts', addPrompt);
+routes.get('/prompts/total', prompts.getNumberOfPrompts);
+routes.get('/prompts/:id', prompts.getPrompt);
+routes.post('/prompts', prompts.addPrompt);
+
+routes.get('/stats', stats.getStats);
+routes.post('/stats', stats.postStat)
 
 module.exports = routes;

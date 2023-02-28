@@ -48,6 +48,10 @@ body {
   color: var(--color1);
 }
 
+#stats {
+  color: var(--color3);
+}
+
 #options {
   display: flex;
   justify-content: space-evenly;
