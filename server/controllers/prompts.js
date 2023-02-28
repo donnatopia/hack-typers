@@ -1,10 +1,10 @@
 const models = require('../models/prompts.js');
 
 module.exports = {
-  getPrompts: (req, res) => {
-    models.getPrompts()
+  getPrompt: (req, res) => {
+    models.getPrompt(req.params.id)
       .then((result) => {
-        res.send(200).json(result);
+        res.status(200).json(result);
       })
       .catch((err) => {
         console.log(err);

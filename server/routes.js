@@ -1,7 +1,7 @@
 const routes = require('express').Router();
-const { getPrompts, addPrompt } = require('./controllers/prompts');
+const { getPrompt, addPrompt } = require('./controllers/prompts');
 
-routes.get('/prompts', getPrompts);
+routes.get('/prompts/:id', getPrompt);
 routes.post('/prompts', addPrompt);
 
 module.exports = routes;
