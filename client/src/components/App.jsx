@@ -5,6 +5,8 @@ import Stats from './Stats.jsx';
 import Options from './Options.jsx';
 
 const App = () => {
+  const user = 'Donna';
+
   // timer states
   const [startTime, setStartTime] = useState(0);
   const [endTime, setEndTime] = useState(0);
@@ -20,7 +22,6 @@ const App = () => {
     axios
       .get('/prompts/total')
       .then(({ data }) => {
-        console.log(data);
         setTotal(data);
       })
       .catch((err) => {
@@ -56,6 +57,8 @@ const App = () => {
       <h1 id='title'>Hack Typers</h1>
       { wordIndex === words.length
         ? <Stats
+            user={ user }
+            prompt={ prompt }
             words={ words }
             startTime={ startTime }
             endTime={ endTime }
