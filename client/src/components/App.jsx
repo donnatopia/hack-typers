@@ -52,7 +52,7 @@ const App = () => {
   }, [wordIndex])
 
   return (
-    <div>
+    <div id='app'>
       <h1 id='title'>Hack Typers</h1>
       { wordIndex === words.length
         ? <Stats

@@ -12,6 +12,12 @@ body {
   font-family: 'Courier New', monospace;
 }
 
+#app {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
 #title {
   text-align: center;
   text-transform: uppercase;

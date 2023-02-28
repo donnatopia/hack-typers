@@ -1,7 +1,12 @@
 import React from 'react';
-import { FaRedoAlt, FaArrowRight } from 'react-icons/fa';
+import { FaRedoAlt, FaArrowRight, FaArrowLeft } from 'react-icons/fa';
 
 const Options = ({ setWordIndex, setStartTime, setPrompt, prompt, total }) => {
+
+  // previous button
+  const handlePrevious = (e) => {
+    setPrompt(prompt - 1);
+  }
 
   // redo button
   const handleRedo = (e) => {
@@ -16,10 +21,14 @@ const Options = ({ setWordIndex, setStartTime, setPrompt, prompt, total }) => {
 
   return (
     <div id='options'>
+      { prompt > 1
+        ? <FaArrowLeft className='option' onClick={e => handlePrevious(e)} />
+        : <span></span>
+      }
       <FaRedoAlt className='option' onClick={e => handleRedo(e)} />
       { prompt < total
         ? <FaArrowRight className='option' onClick={e => handleNext(e)} />
-        : null
+        : <span></span>
       }
     </div>
   )
