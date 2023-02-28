@@ -4,6 +4,7 @@ import Prompt from './Prompt.jsx';
 const GameInterface = ({ words, wordIndex, setWordIndex, setStartTime, startTime }) => {
   const [input, setInput] = useState('');
 
+  // submits each word
   const handleSubmit = (e) => {
     e.preventDefault();
     if(input === words[wordIndex]) {
@@ -12,11 +13,11 @@ const GameInterface = ({ words, wordIndex, setWordIndex, setStartTime, startTime
     }
   };
 
+  // handle user typing
   const handleInput = (e) => {
     // starts the timer when user types first letter
     if (wordIndex === 0 && startTime === 0) {
       const start = new Date();
-      console.log(start.getTime());
       setStartTime(start.getTime());
     }
 

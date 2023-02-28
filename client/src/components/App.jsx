@@ -2,31 +2,50 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import GameInterface from './GameUI.jsx';
 import Stats from './Stats.jsx';
+import Options from './Options.jsx';
 
 const App = () => {
-  const [words, setWords] = useState([]);
-  const [wordIndex, setWordIndex] = useState(0);
+  // timer states
   const [startTime, setStartTime] = useState(0);
   const [endTime, setEndTime] = useState(0);
 
-  useEffect(() => {
-    const options = {
-      url: '/prompts/1',
-    }
+  // prompt states
+  const [words, setWords] = useState([]);
+  const [wordIndex, setWordIndex] = useState(0);
+  const [prompt, setPrompt] = useState(1);
+  const [total, setTotal] = useState(0);
 
-    axios(options)
+  // get number of prompts
+  useEffect(() => {
+    axios
+      .get('/prompts/total')
+      .then(({ data }) => {
+        console.log(data);
+        setTotal(data);
+      })
+      .catch((err) => {
+        console.log('Error retrieving number of prompts', err);
+      });
+
+  }, []);
+
+  // get prompt
+  useEffect(() => {
+    axios
+      .get (`/prompts/${prompt}`)
       .then(({ data }) => {
         setWords(data.text.split(' '));
+        setPrompt(data.id);
       })
       .catch((err) => {
         console.log('Error retrieving initial prompt', err);
       });
 
-  }, []);
+  }, [prompt]);
 
+  // end the timer when user finishes
   useEffect(() => {
     if (wordIndex === words.length) {
-      // end the timer when user finishes
       const end = new Date();
       setEndTime(end.getTime());
     }
@@ -49,6 +68,13 @@ const App = () => {
             setStartTime={ setStartTime }
           />
       }
+      <Options
+        setWordIndex={ setWordIndex }
+        setStartTime={ setStartTime }
+        setPrompt={ setPrompt }
+        prompt={ prompt }
+        total={ total }
+      />
     </div>
   );
 };

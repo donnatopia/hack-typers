@@ -1,6 +1,7 @@
 const routes = require('express').Router();
-const { getPrompt, addPrompt } = require('./controllers/prompts');
+const { getNumberOfPrompts, getPrompt, addPrompt } = require('./controllers/prompts');
 
+routes.get('/prompts/total', getNumberOfPrompts);
 routes.get('/prompts/:id', getPrompt);
 routes.post('/prompts', addPrompt);
 

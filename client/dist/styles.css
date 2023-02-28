@@ -41,3 +41,17 @@ body {
 #valid {
   color: var(--color1);
 }
+
+#options {
+  display: flex;
+  justify-content: space-evenly;
+  color: var(--color3);
+}
+
+.option {
+  cursor: pointer;
+}
+
+.option:hover {
+  color: var(--color4);
+}
