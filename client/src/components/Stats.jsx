@@ -1,14 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import Chart from 'chart.js/auto';
 
 const Stats = ({ startTime, endTime, words, prompt, user }) => {
   // toggling between adding and deleting attempt
-  const [alreadyAdded, setAlreadyAdded] = useState(false);
+  const [alreadyAdded, setAlreadyAdded] = useState(true);
   const [currentAttempt, setCurrentAttempt] = useState({});
 
   // stats
   const timeElapsed = (endTime - startTime)/1000;
   const wpm = Math.floor((words.length * 60) / timeElapsed);
+
+  // chart element
+  const [chart, setChart] = useState(null);
 
   // adding to stats database
   const addAttempt = () => {
@@ -48,26 +52,68 @@ const Stats = ({ startTime, endTime, words, prompt, user }) => {
   // handle attempt
   const handleAttempt = (e) => {
     e.preventDefault();
-
-    if (alreadyAdded) {
-      deleteAttempt();
-    } else {
-      addAttempt();
-    }
-
+    alreadyAdded ? deleteAttempt() : addAttempt();
+    setChart(null);
     setAlreadyAdded(!alreadyAdded);
   }
 
+  // generate data for chart
+  useEffect(() => {
+    axios
+      .get('/stats')
+      .then(({ data }) => {
+        const labels = data.map((attempt, index) => index);
+        const wpms = data.map((attempt) => attempt.wpm);
+
+        // compare the last two
+
+        const borderColor = alreadyAdded ? '#00FF00': '#ff4136';
+
+        const points = {
+          labels: labels,
+          datasets: [
+            {
+              label: 'wpm',
+              data: wpms,
+              borderColor: borderColor,
+              tension: 0.1
+            }
+          ]
+        };
+
+        const config = {
+          type: 'line',
+          data: points
+        };
+
+        const generatedChart = new Chart(document.getElementById('trend'), config);
+        setChart(generatedChart);
+      })
+      .catch((err) => {
+        console.log('Error retrieving stats', err);
+      })
+
+  }, [alreadyAdded]);
+
+  useEffect(() => {
+    // cleanup function to remove chart when component is unmounted
+    return () => {
+      if (chart) {
+        chart.destroy();
+      }
+    };
+  }, [chart]);
+
   return (
     <div id='stats'>
-      <h2>Stats</h2>
-      <h3>WPM</h3>
+      <h3>wpm</h3>
       <p>{ wpm }</p>
-      <h3>Time Elapsed</h3>
+      <h3>time</h3>
       <p>{ timeElapsed } s</p>
       <button onClick={e => handleAttempt(e) }>
         { alreadyAdded ? 'Remove Attempt' : 'Add Attempt' }
       </button>
+      <canvas id='trend' className='chart-line'></canvas>
     </div>
   );
 }
