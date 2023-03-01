@@ -28,7 +28,7 @@ const Stats = ({ startTime, endTime, words, prompt, user }) => {
 
   useEffect(() => {
     setTrend(borderColors[borderKey]);
-  }, [borderKey])
+  }, [borderKey]);
 
   // adding to stats database
   const addAttempt = () => {
@@ -172,10 +172,6 @@ const Stats = ({ startTime, endTime, words, prompt, user }) => {
     <div id='stats'>
       <div id='current-stats'>
         <div>
-          <h3 className='stats-label'>attempt</h3>
-          <p className={`stats-data ${borderKey}-trend`}>{ attemptNumber }</p>
-        </div>
-        <div>
           <h3 className='stats-label'>wpm</h3>
           <p className={`stats-data ${borderKey}-trend`}>{ wpm }</p>
         </div>
@@ -184,8 +180,9 @@ const Stats = ({ startTime, endTime, words, prompt, user }) => {
           <p className={`stats-data ${borderKey}-trend`}>{ timeElapsed } s</p>
         </div>
         <div>
+          <p>Attempt #{ attemptNumber }{ alreadyAdded ? ' ' : ' NOT '}Added</p>
           <button id='attempt-button' onClick={e => handleAttempt(e) }>
-            { alreadyAdded ? 'Delete Attempt' : 'Save Attempt' }
+            { alreadyAdded ? 'Undo' : 'Submit' }
           </button>
         </div>
       </div>
