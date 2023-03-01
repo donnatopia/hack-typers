@@ -49,20 +49,6 @@ const App = () => {
 
   }, [prompt]);
 
-  // end the timer when user finishes
-  useEffect(() => {
-    if (characterIndex === characters.length && startTime !== 0) {
-      console.log('end');
-      const end = new Date();
-      const endTimer = end.getTime();
-
-      // udpates wpm and time elapsed
-      let time = (endTimer - startTime)/1000;
-      setTimeElapsed(time);
-      setWpm(Math.floor((words.length * 60) / time ));
-    }
-  }, [characterIndex]);
-
   return (
     <div id='app'>
       <h1 id='title'>Hack Typers</h1>
@@ -79,6 +65,10 @@ const App = () => {
             setStartTime={ setStartTime }
             characterIndex={ characterIndex }
             setCharacterIndex={ setCharacterIndex }
+            setTimeElapsed={ setTimeElapsed }
+            setWpm={ setWpm }
+            startTime={ startTime }
+            words={ words }
           />
       }
       <Options

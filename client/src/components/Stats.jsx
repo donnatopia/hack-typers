@@ -8,10 +8,6 @@ const Stats = ({ wpm, timeElapsed, words, prompt, user }) => {
   const [currentAttempt, setCurrentAttempt] = useState({});
   const [attemptNumber, setAttemptNumber] = useState(0);
 
-  // // stats
-  // const timeElapsed = (endTime - startTime)/1000;
-  // const wpm = Math.floor((words.length * 60) / timeElapsed);
-
   // chart element
   const [chart, setChart] = useState(null);
 
