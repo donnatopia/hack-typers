@@ -4,7 +4,7 @@ import Chart from 'chart.js/auto';
 
 const Stats = ({ startTime, endTime, words, prompt, user }) => {
   // toggling between adding and deleting attempt
-  const [alreadyAdded, setAlreadyAdded] = useState(true);
+  const [alreadyAdded, setAlreadyAdded] = useState(false);
   const [currentAttempt, setCurrentAttempt] = useState({});
 
   // stats
