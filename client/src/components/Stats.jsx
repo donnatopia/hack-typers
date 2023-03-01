@@ -65,8 +65,7 @@ const Stats = ({ startTime, endTime, words, prompt, user }) => {
         const labels = data.map((attempt, index) => index);
         const wpms = data.map((attempt) => attempt.wpm);
 
-        // compare the last two
-
+        // change color of chartline depending on if users add or delete attempt
         const borderColor = alreadyAdded ? '#00FF00': '#ff4136';
 
         const points = {
@@ -81,9 +80,31 @@ const Stats = ({ startTime, endTime, words, prompt, user }) => {
           ]
         };
 
+        const options = {
+          scales: {
+            x: {
+              title: {
+                display: true,
+                text: 'Attempts'
+              }
+            },
+            y: {
+              title: {
+                display: true,
+                text: 'Words per Minute (wpm)'
+              }
+            }
+          },
+
+          legend: {
+            display: false
+          }
+        }
+
         const config = {
           type: 'line',
-          data: points
+          data: points,
+          options: options
         };
 
         const generatedChart = new Chart(document.getElementById('trend'), config);
