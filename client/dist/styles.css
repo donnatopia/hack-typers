@@ -1,5 +1,8 @@
 :root {
   --bg-color: #323437;
+  --upward: #00FF00;
+  --downward: #FF4136;
+  --equal: #FFDD00;
   --color1: #BB86FC;
   --color2: #3700B3;
   --color3: #D1D0C5;
@@ -9,7 +12,7 @@
 body {
   margin: 10vh 10vw;
   background-color: var(--bg-color);
-  font-family: 'Courier New', monospace;
+  font-family: 'Roboto', sans-serif;
 }
 
 #app {
@@ -27,10 +30,11 @@ body {
 }
 
 #prompt {
+  font-family: 'Courier New', monospace;
+  color: var(--color4);
   display: flex;
   flex-wrap: wrap;
   font-size: x-large;
-  gap: 20px;
 }
 
 #blinking-cursor {
@@ -44,12 +48,6 @@ body {
   }
 }
 
-.word {
-  color: var(--color4);
-  display: flex;
-  align-items: center;
-}
-
 #letter {
   display: flex;
   align-items: center;
@@ -61,6 +59,54 @@ body {
 
 #stats {
   color: var(--color3);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+#current-stats {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.stats-label {
+  font-size: 2em;
+  color: var(--color4);
+}
+
+.stats-data {
+  font-size: 3em;
+}
+
+.standard-trend {
+  color: var(--color1);
+}
+
+.upward-trend {
+  color: var(--upward);
+}
+
+.downward-trend {
+  color: var(--downward);
+}
+
+.equal-trend {
+  color: var(--equal);
+}
+
+#attempt-button {
+  cursor: pointer;
+  font-family:'Courier New', Courier, monospace;
+  padding: 5px;
+  border-radius: 2px;
+  background-color: #D1D0C5;
+}
+
+#chart {
+  max-height: 50vh;
 }
 
 #options {

@@ -10,7 +10,6 @@ const Prompt = ({ characters, setStartTime, characterIndex, setCharacterIndex })
     const handleKeyDown = (e) => {
       if (characterIndex === 0) {
         const start = new Date();
-        console.log(start);
         setStartTime(start.getTime());
       }
 
@@ -38,12 +37,8 @@ const Prompt = ({ characters, setStartTime, characterIndex, setCharacterIndex })
   };
 
   return (
-    <div>
-      <div id='prompt'>
-        <div className='word'>
-          { characters.map((letter, index) => displayLetter(letter, index))}
-        </div>
-      </div>
+    <div id='prompt'>
+      { characters.map((letter, index) => displayLetter(letter, index))}
     </div>
   )
 }

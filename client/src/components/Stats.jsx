@@ -6,6 +6,7 @@ const Stats = ({ startTime, endTime, words, prompt, user }) => {
   // toggling between adding and deleting attempt
   const [alreadyAdded, setAlreadyAdded] = useState(false);
   const [currentAttempt, setCurrentAttempt] = useState({});
+  const [attemptNumber, setAttemptNumber] = useState(0);
 
   // stats
   const timeElapsed = (endTime - startTime)/1000;
@@ -13,6 +14,21 @@ const Stats = ({ startTime, endTime, words, prompt, user }) => {
 
   // chart element
   const [chart, setChart] = useState(null);
+
+  // chart colors
+  let borderColors = {
+    standard: '#BB86FC',
+    upward: '#00FF00',
+    downward: '#FF4136',
+    equal: '#FFDD00'
+  }
+
+  const [borderKey, setBorderKey] = useState(trend);
+  const [trend, setTrend] = useState(borderColors[borderKey]);
+
+  useEffect(() => {
+    setTrend(borderColors[borderKey]);
+  }, [borderKey])
 
   // adding to stats database
   const addAttempt = () => {
@@ -62,11 +78,33 @@ const Stats = ({ startTime, endTime, words, prompt, user }) => {
     axios
       .get('/stats')
       .then(({ data }) => {
-        const labels = data.map((attempt, index) => index);
-        const wpms = data.map((attempt) => attempt.wpm);
+        const labels = [];
+        const wpms = [];
 
-        // change color of chartline depending on if users add or delete attempt
-        const borderColor = alreadyAdded ? '#00FF00': '#ff4136';
+        data.forEach((attempt, index) => {
+          labels.push(index);
+          wpms.push(attempt.wpm);
+        });
+
+        if (attemptNumber === 0) {
+          setAttemptNumber(data.length);
+        }
+
+        // determine of color of chartline if save attempt
+        if (alreadyAdded) {
+          const latestWpm = data[data.length - 1].wpm;
+          const prevWpm = data[data.length - 2].wpm;
+          const diff = latestWpm - prevWpm;
+          if (diff > 0) {
+            setBorderKey('upward');
+          } else if (diff < 0) {
+            setBorderKey('downward');
+          } else {
+            setBorderKey('equal');
+          }
+        } else {
+          setBorderKey('standard');
+        }
 
         const points = {
           labels: labels,
@@ -74,7 +112,7 @@ const Stats = ({ startTime, endTime, words, prompt, user }) => {
             {
               label: 'wpm',
               data: wpms,
-              borderColor: borderColor,
+              borderColor: borderColors.standard,
               tension: 0.1
             }
           ]
@@ -107,17 +145,22 @@ const Stats = ({ startTime, endTime, words, prompt, user }) => {
           options: options
         };
 
-        const generatedChart = new Chart(document.getElementById('trend'), config);
+        const generatedChart = new Chart(document.getElementById('chart'), config);
         setChart(generatedChart);
+
+        return () => {
+          if (chart) {
+            chart.destroy();
+          }
+        };
+
       })
       .catch((err) => {
         console.log('Error retrieving stats', err);
       })
-
   }, [alreadyAdded]);
 
   useEffect(() => {
-    // cleanup function to remove chart when component is unmounted
     return () => {
       if (chart) {
         chart.destroy();
@@ -127,14 +170,26 @@ const Stats = ({ startTime, endTime, words, prompt, user }) => {
 
   return (
     <div id='stats'>
-      <h3>wpm</h3>
-      <p>{ wpm }</p>
-      <h3>time</h3>
-      <p>{ timeElapsed } s</p>
-      <button onClick={e => handleAttempt(e) }>
-        { alreadyAdded ? 'Remove Attempt' : 'Add Attempt' }
-      </button>
-      <canvas id='trend' className='chart-line'></canvas>
+      <div id='current-stats'>
+        <div>
+          <h3 className='stats-label'>attempt</h3>
+          <p className={`stats-data ${borderKey}-trend`}>{ attemptNumber }</p>
+        </div>
+        <div>
+          <h3 className='stats-label'>wpm</h3>
+          <p className={`stats-data ${borderKey}-trend`}>{ wpm }</p>
+        </div>
+        <div>
+          <h3 className='stats-label'>time</h3>
+          <p className={`stats-data ${borderKey}-trend`}>{ timeElapsed } s</p>
+        </div>
+        <div>
+          <button id='attempt-button' onClick={e => handleAttempt(e) }>
+            { alreadyAdded ? 'Delete Attempt' : 'Save Attempt' }
+          </button>
+        </div>
+      </div>
+      <canvas id='chart'></canvas>
     </div>
   );
 }
