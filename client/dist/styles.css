@@ -72,12 +72,22 @@ body {
   align-items: center;
 }
 
+.indiv-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .stats-label {
-  font-size: 2em;
+  margin-bottom: 0;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 1.8em;
+  font-weight: 400;
   color: var(--color4);
 }
 
 .stats-data {
+  margin-top: 0;
   font-size: 3em;
 }
 
@@ -112,6 +122,8 @@ body {
 #options {
   display: flex;
   justify-content: space-evenly;
+  padding-top: 4vh;
+  font-size: 1.5em;
   color: var(--color3);
 }
 

@@ -2,15 +2,15 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Chart from 'chart.js/auto';
 
-const Stats = ({ startTime, endTime, words, prompt, user }) => {
+const Stats = ({ wpm, timeElapsed, words, prompt, user }) => {
   // toggling between adding and deleting attempt
   const [alreadyAdded, setAlreadyAdded] = useState(false);
   const [currentAttempt, setCurrentAttempt] = useState({});
   const [attemptNumber, setAttemptNumber] = useState(0);
 
-  // stats
-  const timeElapsed = (endTime - startTime)/1000;
-  const wpm = Math.floor((words.length * 60) / timeElapsed);
+  // // stats
+  // const timeElapsed = (endTime - startTime)/1000;
+  // const wpm = Math.floor((words.length * 60) / timeElapsed);
 
   // chart element
   const [chart, setChart] = useState(null);
@@ -171,15 +171,15 @@ const Stats = ({ startTime, endTime, words, prompt, user }) => {
   return (
     <div id='stats'>
       <div id='current-stats'>
-        <div>
+        <div className='indiv-stat'>
           <h3 className='stats-label'>wpm</h3>
           <p className={`stats-data ${borderKey}-trend`}>{ wpm }</p>
         </div>
-        <div>
+        <div className='indiv-stat'>
           <h3 className='stats-label'>time</h3>
           <p className={`stats-data ${borderKey}-trend`}>{ timeElapsed } s</p>
         </div>
-        <div>
+        <div className='indiv-stat'>
           <p>Attempt #{ attemptNumber }{ alreadyAdded ? ' ' : ' NOT '}Added</p>
           <button id='attempt-button' onClick={e => handleAttempt(e) }>
             { alreadyAdded ? 'Undo' : 'Submit' }

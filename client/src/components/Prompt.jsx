@@ -9,6 +9,7 @@ const Prompt = ({ characters, setStartTime, characterIndex, setCharacterIndex })
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (characterIndex === 0) {
+        console.log('start')
         const start = new Date();
         setStartTime(start.getTime());
       }

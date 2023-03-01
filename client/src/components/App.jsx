@@ -5,15 +5,18 @@ import Options from './Options.jsx';
 import Prompt from './Prompt.jsx';
 
 const App = () => {
+  // set user
   const user = 'Donna';
 
   // timer states
   const [startTime, setStartTime] = useState(0);
-  const [endTime, setEndTime] = useState(0);
+  const [wpm, setWpm] = useState(0);
+  const [timeElapsed, setTimeElapsed] = useState(0);
 
   // prompt states
   const [characterIndex, setCharacterIndex] = useState(0);
   const [characters, setCharacters] = useState([]);
+  const [words, setWords] = useState([]);
 
   const [prompt, setPrompt] = useState(1);
   const [total, setTotal] = useState(0);
@@ -37,6 +40,7 @@ const App = () => {
       .get (`/prompts/${prompt}`)
       .then(({ data }) => {
         setCharacters(data.text.split(''));
+        setWords(data.text.split(' '));
         setPrompt(data.id);
       })
       .catch((err) => {
@@ -47,9 +51,15 @@ const App = () => {
 
   // end the timer when user finishes
   useEffect(() => {
-    if (characterIndex === characters.length) {
+    if (characterIndex === characters.length && startTime !== 0) {
+      console.log('end');
       const end = new Date();
-      setEndTime(end.getTime());
+      const endTimer = end.getTime();
+
+      // udpates wpm and time elapsed
+      let time = (endTimer - startTime)/1000;
+      setTimeElapsed(time);
+      setWpm(Math.floor((words.length * 60) / time ));
     }
   }, [characterIndex]);
 
@@ -60,9 +70,9 @@ const App = () => {
         ? <Stats
             user={ user }
             prompt={ prompt }
-            words={ characters.join('').split(' ') }
-            startTime={ startTime }
-            endTime={ endTime }
+            words={ words }
+            wpm={ wpm }
+            timeElapsed={ timeElapsed }
           />
         : <Prompt
             characters={ characters }
