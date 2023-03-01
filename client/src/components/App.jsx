@@ -62,13 +62,13 @@ const App = () => {
           />
         : <Prompt
             characters={ characters }
+            words={ words }
+            startTime={ startTime }
             setStartTime={ setStartTime }
             characterIndex={ characterIndex }
             setCharacterIndex={ setCharacterIndex }
             setTimeElapsed={ setTimeElapsed }
             setWpm={ setWpm }
-            startTime={ startTime }
-            words={ words }
           />
       }
       <Options
