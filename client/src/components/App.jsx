@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import GameInterface from './GameUI.jsx';
 import Stats from './Stats.jsx';
 import Options from './Options.jsx';
+import Prompt from './Prompt.jsx';
 
 const App = () => {
   const user = 'Donna';
@@ -12,8 +12,9 @@ const App = () => {
   const [endTime, setEndTime] = useState(0);
 
   // prompt states
-  const [words, setWords] = useState([]);
-  const [wordIndex, setWordIndex] = useState(0);
+  const [characterIndex, setCharacterIndex] = useState(0);
+  const [characters, setCharacters] = useState([]);
+
   const [prompt, setPrompt] = useState(1);
   const [total, setTotal] = useState(0);
 
@@ -35,7 +36,7 @@ const App = () => {
     axios
       .get (`/prompts/${prompt}`)
       .then(({ data }) => {
-        setWords(data.text.split(' '));
+        setCharacters(data.text.split(''));
         setPrompt(data.id);
       })
       .catch((err) => {
@@ -46,33 +47,32 @@ const App = () => {
 
   // end the timer when user finishes
   useEffect(() => {
-    if (wordIndex === words.length) {
+    if (characterIndex === characters.length) {
       const end = new Date();
       setEndTime(end.getTime());
     }
-  }, [wordIndex])
+  }, [characterIndex]);
 
   return (
     <div id='app'>
       <h1 id='title'>Hack Typers</h1>
-      { wordIndex === words.length
+      { characterIndex === characters.length
         ? <Stats
             user={ user }
             prompt={ prompt }
-            words={ words }
+            words={ characters.join('').split(' ') }
             startTime={ startTime }
             endTime={ endTime }
           />
-        : <GameInterface
-            words={ words }
-            wordIndex={ wordIndex }
-            setWordIndex={ setWordIndex }
-            startTime={ startTime }
+        : <Prompt
+            characters={ characters }
             setStartTime={ setStartTime }
+            characterIndex={ characterIndex }
+            setCharacterIndex={ setCharacterIndex }
           />
       }
       <Options
-        setWordIndex={ setWordIndex }
+        setCharacterIndex={ setCharacterIndex }
         setStartTime={ setStartTime }
         setPrompt={ setPrompt }
         prompt={ prompt }

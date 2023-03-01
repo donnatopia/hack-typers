@@ -26,13 +26,6 @@ body {
   text-shadow: 1px 1px 1px var(--color4);
 }
 
-#game-interface {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 10px;
-}
-
 #prompt {
   display: flex;
   flex-wrap: wrap;
@@ -40,8 +33,26 @@ body {
   gap: 20px;
 }
 
+#blinking-cursor {
+  animation: blink-animation 1s steps(5, start) infinite;
+  color: var(--color1);
+}
+
+@keyframes blink-animation {
+  to {
+    visibility: hidden;
+  }
+}
+
 .word {
   color: var(--color4);
+  display: flex;
+  align-items: center;
+}
+
+#letter {
+  display: flex;
+  align-items: center;
 }
 
 #valid {

@@ -1,26 +1,26 @@
 import React from 'react';
 import { FaRedoAlt, FaArrowRight, FaArrowLeft } from 'react-icons/fa';
 
-const Options = ({ setWordIndex, setStartTime, setPrompt, prompt, total }) => {
+const Options = ({ setCharacterIndex, setStartTime, setPrompt, prompt, total }) => {
 
   // previous button
   const handlePrevious = (e) => {
-    setPrompt(prompt - 1);
-    setWordIndex(0);
+    setCharacterIndex(0);
     setStartTime(0);
+    setPrompt(prompt - 1);
   }
 
   // redo button
   const handleRedo = (e) => {
-    setWordIndex(0);
+    setCharacterIndex(0);
     setStartTime(0);
   }
 
   // next button
   const handleNext = (e) => {
-    setPrompt(prompt + 1);
-    setWordIndex(0);
+    setCharacterIndex(0);
     setStartTime(0);
+    setPrompt(prompt + 1);
   }
 
   return (

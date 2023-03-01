@@ -1,15 +1,49 @@
-import React from 'react';
+import React, { useState , useEffect } from 'react';
 
-const Prompt = ({ words, wordIndex }) => {
+const Prompt = ({ characters, setStartTime, characterIndex, setCharacterIndex }) => {
+
   const setColor = (index) => {
-    return index < wordIndex ? 'valid' : null
+    return index < characterIndex ? 'valid' : null;
   }
 
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (characterIndex === 0) {
+        const start = new Date();
+        console.log(start);
+        setStartTime(start.getTime());
+      }
+
+      if (e.key === characters[characterIndex]) {
+        setCharacterIndex(characterIndex + 1);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    }
+  }, [characterIndex, characters]);
+
+  const displayLetter = (letter, index) => {
+    letter === ' ' ? letter = (<span>&nbsp;</span>) : letter;
+
+    return (
+      <p id='letter' key={ letter + index }>
+        { index === characterIndex ? <span id='blinking-cursor'>|</span> : null }
+        <span id={ setColor(index) }>{ letter }</span>
+      </p>
+    )
+  };
+
   return (
-    <div id='prompt'>
-      { words.map((word, index) => (
-        <p key={ index } className='word' id={ setColor(index) }>{ word }</p>
-      ))}
+    <div>
+      <div id='prompt'>
+        <div className='word'>
+          { characters.map((letter, index) => displayLetter(letter, index))}
+        </div>
+      </div>
     </div>
   )
 }
