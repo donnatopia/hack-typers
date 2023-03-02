@@ -6,7 +6,8 @@
   "scripts": {
     "build": "npx webpack",
     "client-dev": "npx webpack --watch",
-    "server-dev": "npx nodemon --watch server server/index.js"
+    "server-dev": "npx nodemon --watch server server/index.js",
+    "start": "npx live-server ./client/dist"
   },
   "repository": {
     "type": "git",
@@ -28,6 +29,7 @@
     "babel-loader": "^9.1.2",
     "css-loader": "^6.7.3",
     "html-webpack-plugin": "^5.5.0",
+    "live-server": "^1.2.2",
     "mini-css-extract-plugin": "^2.7.2",
     "prettier": "^2.8.4",
     "style-loader": "^3.3.1",
@@ -51,6 +53,7 @@
     "react": "^18.2.0",
     "react-bootstrap": "^2.7.2",
     "react-dom": "^18.2.0",
-    "react-icons": "^4.7.1"
+    "react-icons": "^4.7.1",
+    "react-router-dom": "^6.8.2"
   }
 }

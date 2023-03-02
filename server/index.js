@@ -20,13 +20,13 @@ server.use(morgan('dev'));
 server.use(routes);
 
 // server listening at port
-const PORT = process.env.PORT || 3000;
+const SERVER_PORT = process.env.SERVER_PORT || 3000;
 const SERVER_HOST = process.env.SERVER_HOST || 'localhost'
 
-server.listen(PORT, (err) => {
+server.listen(SERVER_PORT, (err) => {
   if (err) {
     console.log('Error connecting server to port', err);
   } else {
-    console.log(`Server listening at http://${process.env.SERVER_HOST}:${PORT}`);
+    console.log(`Server listening at http://${process.env.SERVER_HOST}:${SERVER_PORT}`);
   }
 });

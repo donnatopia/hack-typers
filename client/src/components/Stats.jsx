@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Chart from 'chart.js/auto';
+import { SERVER_URL } from '../../../config.js';
+import { IoIosAddCircleOutline, IoIosAddCircle, IoIosRemoveCircleOutline } from 'react-icons/io';
 
 const Stats = ({ wpm, timeElapsed, words, prompt, user }) => {
   // toggling between adding and deleting attempt
   const [alreadyAdded, setAlreadyAdded] = useState(false);
   const [currentAttempt, setCurrentAttempt] = useState({});
-  const [attemptNumber, setAttemptNumber] = useState(0);
 
   // chart element
   const [chart, setChart] = useState(null);
@@ -19,18 +20,13 @@ const Stats = ({ wpm, timeElapsed, words, prompt, user }) => {
     equal: '#FFDD00'
   }
 
-  const [borderKey, setBorderKey] = useState(trend);
-  const [trend, setTrend] = useState(borderColors[borderKey]);
-
-  useEffect(() => {
-    setTrend(borderColors[borderKey]);
-  }, [borderKey]);
+  const [borderKey, setBorderKey] = useState('standard');
 
   // adding to stats database
   const addAttempt = () => {
     const options = {
       method: 'POST',
-      url: '/stats',
+      url: `${SERVER_URL}/stats`,
       data: { user, wpm, prompt }
     }
 
@@ -48,7 +44,7 @@ const Stats = ({ wpm, timeElapsed, words, prompt, user }) => {
   const deleteAttempt = () => {
     const options = {
       method: 'DELETE',
-      url: '/stats',
+      url: `${SERVER_URL}/stats`,
       data: currentAttempt
     };
 
@@ -72,7 +68,7 @@ const Stats = ({ wpm, timeElapsed, words, prompt, user }) => {
   // generate data for chart
   useEffect(() => {
     axios
-      .get('/stats')
+      .get(`${SERVER_URL}/stats`)
       .then(({ data }) => {
         const labels = [];
         const wpms = [];
@@ -82,23 +78,24 @@ const Stats = ({ wpm, timeElapsed, words, prompt, user }) => {
           wpms.push(attempt.wpm);
         });
 
-        if (attemptNumber === 0) {
-          setAttemptNumber(data.length);
-        }
-
         // determine of color of chartline if save attempt
+        let chartline = borderColors[borderKey];
         if (alreadyAdded) {
           const latestWpm = data[data.length - 1].wpm;
           const prevWpm = data[data.length - 2].wpm;
           const diff = latestWpm - prevWpm;
           if (diff > 0) {
+            chartline = borderColors.upward;
             setBorderKey('upward');
           } else if (diff < 0) {
+            chartline = borderColors.downward;
             setBorderKey('downward');
           } else {
+            chartline = borderColors.equal;
             setBorderKey('equal');
           }
         } else {
+          chartline = borderColors.standard;
           setBorderKey('standard');
         }
 
@@ -108,7 +105,7 @@ const Stats = ({ wpm, timeElapsed, words, prompt, user }) => {
             {
               label: 'wpm',
               data: wpms,
-              borderColor: borderColors.standard,
+              borderColor: chartline,
               tension: 0.1
             }
           ]
@@ -153,7 +150,8 @@ const Stats = ({ wpm, timeElapsed, words, prompt, user }) => {
       })
       .catch((err) => {
         console.log('Error retrieving stats', err);
-      })
+      });
+
   }, [alreadyAdded]);
 
   useEffect(() => {
@@ -176,10 +174,13 @@ const Stats = ({ wpm, timeElapsed, words, prompt, user }) => {
           <p className={`stats-data ${borderKey}-trend`}>{ timeElapsed } s</p>
         </div>
         <div className='indiv-stat'>
-          <p>Attempt #{ attemptNumber }{ alreadyAdded ? ' ' : ' NOT '}Added</p>
-          <button id='attempt-button' onClick={e => handleAttempt(e) }>
-            { alreadyAdded ? 'Undo' : 'Submit' }
-          </button>
+          <h3 className='stats-label' id='attempt-label'>
+            { alreadyAdded ? 'remove attempt?' : 'save attempt?' }
+          </h3>
+          { alreadyAdded
+            ? <IoIosRemoveCircleOutline id='attempt-button' onClick={e => handleAttempt(e)}/>
+            : <IoIosAddCircleOutline id='attempt-button' onClick={e => handleAttempt(e)}/>
+          }
         </div>
       </div>
       <canvas id='chart'></canvas>
