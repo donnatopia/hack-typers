@@ -4,23 +4,38 @@ import { useAuth } from '../../contexts/AuthContext.jsx';
 import { Link } from 'react-router-dom';
 
 const Login = () => {
-  const emailRef = useRef()
-  const passwordRef = useRef()
-  const passwordConfirmRef = useRef()
+  const emailRef = useRef();
+  const passwordRef = useRef();
+  const passwordConfirmRef = useRef();
 
-  const [error, setError] = useState('')
-  const [loading, setLoading] = useState(false)
+  const { login } = useAuth();
 
-  const handleSubmit = async (e) => {
+  const [error, setError] = useState('');
+  const [message, setMessage] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = (e) => {
     e.preventDefault();
-  }
+
+    setError('');
+    setLoading(true);
+    login(emailRef.current.value, passwordRef.current.value)
+      .then((userCredential) => {
+        setMessage(`Successfully Logged In! Go to`);
+      })
+      .catch((err) => {
+        setError('Incorrect Login Information');
+        console.log(err);
+      });
+  };
 
   return (
     <>
       <Card>
         <Card.Body>
           <h2 className="text-center">Login</h2>
-          {error && <Alert variant="danger">{error}</Alert>}
+          { message && <Alert variant='success'>{ message } <Link to='/'>Dashboard</Link></Alert> }
+          { error && <Alert variant="danger">{error}</Alert> }
           <Form onSubmit={ handleSubmit }>
             <Form.Group className='padding-top' id="email">
               <Form.Label>Email</Form.Label>

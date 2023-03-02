@@ -4,16 +4,17 @@ import { useAuth } from '../../contexts/AuthContext.jsx';
 import { Link } from 'react-router-dom';
 
 const Signup = () => {
-  const emailRef = useRef()
-  const passwordRef = useRef()
-  const passwordConfirmRef = useRef()
+  const emailRef = useRef();
+  const passwordRef = useRef();
+  const passwordConfirmRef = useRef();
 
   const { signup } = useAuth();
 
-  const [error, setError] = useState('')
-  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('');
+  const [message, setMessage] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
 
     if (passwordRef.current.value !== passwordConfirmRef.current.value) {
@@ -22,12 +23,14 @@ const Signup = () => {
     }
 
     setError('');
+    setLoading(true);
     signup(emailRef.current.value, passwordRef.current.value)
       .then((userCredential) => {
-        console.log('Successfully created account', userCredential);
+        setMessage('Successfully created account');
       })
       .catch((err) => {
-        console.log('Failed creating account', err);
+        setError('Failed creating account');
+        console.log(err);
       });
   }
 
@@ -36,6 +39,7 @@ const Signup = () => {
       <Card>
         <Card.Body>
           <h2 className="text-center mb-4">Sign Up</h2>
+          { message && <Alert variant='success'>{ message }</Alert> }
           {error && <Alert variant="danger">{error}</Alert>}
           <Form onSubmit={ handleSubmit }>
             <Form.Group className='padding-top' id="email">

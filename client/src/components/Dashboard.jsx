@@ -4,6 +4,7 @@ import Stats from './Stats.jsx';
 import Options from './Options.jsx';
 import Prompt from './Prompt.jsx';
 import { SERVER_URL } from '../../../config.js';
+import { Link } from 'react-router-dom';
 
 const Dashboard = () => {
   // set user
@@ -52,6 +53,8 @@ const Dashboard = () => {
 
   return (
     <div id='app'>
+      <Link to='/signup'>Sign Up</Link>
+      <Link to='/login'>Log In</Link>
       <h1 id='title'>Hack Typers</h1>
       { characterIndex === characters.length
         ? <Stats
