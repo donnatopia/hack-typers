@@ -22,7 +22,7 @@ const Login = () => {
     setLoading(true);
     login(emailRef.current.value, passwordRef.current.value)
       .then((userCredential) => {
-        navigate('/');
+        navigate('/dashboard');
       })
       .catch((err) => {
         setError('Incorrect Login Information');
