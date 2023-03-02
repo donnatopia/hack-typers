@@ -7,8 +7,9 @@ const Signup = () => {
   const emailRef = useRef();
   const passwordRef = useRef();
   const passwordConfirmRef = useRef();
+  const usernameRef = useRef();
 
-  const { signup } = useAuth();
+  const { signup, addUsername } = useAuth();
 
   const [error, setError] = useState('');
   const [message, setMessage] = useState('');
@@ -18,14 +19,16 @@ const Signup = () => {
     e.preventDefault();
 
     if (passwordRef.current.value !== passwordConfirmRef.current.value) {
-      console.log(passwordRef.current.value, passwordConfirmRef.current.value)
       return setError('Passwords do not match');
     }
 
     setError('');
     setLoading(true);
     signup(emailRef.current.value, passwordRef.current.value)
-      .then((userCredential) => {
+      .then(({ user }) => {
+        addUsername(user, usernameRef.current.value);
+      })
+      .then(() => {
         setMessage('Successfully created account');
       })
       .catch((err) => {
@@ -42,6 +45,10 @@ const Signup = () => {
           { message && <Alert variant='success'>{ message }</Alert> }
           {error && <Alert variant="danger">{error}</Alert>}
           <Form onSubmit={ handleSubmit }>
+            <Form.Group className='padding-top' id="username">
+              <Form.Label>Username</Form.Label>
+              <Form.Control type="username" ref={ usernameRef } required />
+            </Form.Group>
             <Form.Group className='padding-top' id="email">
               <Form.Label>Email</Form.Label>
               <Form.Control type="email" ref={emailRef} required />

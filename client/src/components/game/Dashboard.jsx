@@ -4,11 +4,13 @@ import Stats from './Stats.jsx';
 import Options from './Options.jsx';
 import Prompt from './Prompt.jsx';
 import { SERVER_URL } from '../../../../config.js';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { Button } from 'react-bootstrap';
+import { useAuth } from '../../contexts/AuthContext.jsx';
 
 const Dashboard = () => {
-  // set user
-  const user = 'Donna';
+  // get auth
+  const { currentUser, logout } = useAuth();
 
   // timer states
   const [startTime, setStartTime] = useState(0);
@@ -51,14 +53,32 @@ const Dashboard = () => {
 
   }, [prompt]);
 
+  // handle logout
+  const navigate = useNavigate();
+  const handleNavigate = (e, path) => {
+    e.preventDefault();
+
+    logout()
+      .then(() => navigate(path))
+      .catch(err => {
+        console.log('Error logging out', err);
+      });
+  }
+
   return (
     <div id='app'>
-      <Link to='/signup'>Sign Up</Link>
-      <Link to='/login'>Log In</Link>
+      <div className='text-right'>
+        <p id='subtitle'>
+          Welcome, { currentUser.displayName }
+        </p>
+        <Button variant='primary' onClick={ e => handleNavigate(e, '/')}>
+          Log Out
+        </Button>
+      </div>
       <h1 id='title'>Hack Typers</h1>
       { characterIndex === characters.length
         ? <Stats
-            user={ user }
+            user={ currentUser }
             prompt={ prompt }
             words={ words }
             wpm={ wpm }

@@ -13,11 +13,11 @@ const Welcome = () => {
   return (
     <div>
       <h1 id='title'>Hack Typers</h1>
-      <div>
-        <Button variant='info' onClick={ e => handleNavigate(e, '/signup') }>
+      <div className='text-center'>
+        <Button variant='dark' onClick={ e => handleNavigate(e, '/signup') }>
           Sign Up
         </Button>{' '}
-        <Button variant='primary' onClick={ e => handleNavigate(e, '/signup') }>
+        <Button variant='light' onClick={ e => handleNavigate(e, '/login') }>
           Log In
         </Button>
       </div>
