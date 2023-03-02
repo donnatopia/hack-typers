@@ -71,14 +71,14 @@ const Dashboard = () => {
         <p id='subtitle'>
           Welcome, { currentUser.displayName }
         </p>
-        <Button variant='primary' onClick={ e => handleNavigate(e, '/')}>
+        <Button variant='dark' onClick={ e => handleNavigate(e, '/')}>
           Log Out
         </Button>
       </div>
       <h1 id='title'>Hack Typers</h1>
       { characterIndex === characters.length
         ? <Stats
-            user={ currentUser }
+            user={ currentUser.displayName }
             prompt={ prompt }
             words={ words }
             wpm={ wpm }
