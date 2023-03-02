@@ -11,6 +11,7 @@ const Stats = ({ wpm, timeElapsed, words, prompt, user }) => {
 
   // chart element
   const [chart, setChart] = useState(null);
+  const [firstAttempt, setFirstAttempt] = useState(true);
 
   // chart colors
   let borderColors = {
@@ -67,9 +68,14 @@ const Stats = ({ wpm, timeElapsed, words, prompt, user }) => {
 
   // generate data for chart
   useEffect(() => {
-    axios
-      .get(`${SERVER_URL}/stats`)
+
+    axios(`${SERVER_URL}/stats/${user}`)
       .then(({ data }) => {
+
+        if (data.length > 0) {
+          setFirstAttempt(false);
+        }
+
         const labels = [];
         const wpms = [];
 

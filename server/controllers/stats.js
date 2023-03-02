@@ -2,7 +2,7 @@ const models = require('../models/stats.js');
 
 module.exports = {
   getStats: (req, res) => {
-    models.getStats()
+    models.getStats(req.params.user)
       .then((result) => {
         res.status(200).json(result);
       })

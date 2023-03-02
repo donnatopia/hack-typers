@@ -6,7 +6,7 @@ routes.get('/prompts/total', prompts.getNumberOfPrompts);
 routes.get('/prompts/:id', prompts.getPrompt);
 routes.post('/prompts', prompts.addPrompt);
 
-routes.get('/stats', stats.getStats);
+routes.get('/stats/:user', stats.getStats);
 routes.post('/stats', stats.postStat);
 routes.delete('/stats', stats.deleteStat);
 

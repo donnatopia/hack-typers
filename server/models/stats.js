@@ -9,8 +9,8 @@ const Stat = mongoose.model('Stat', new mongoose.Schema({
 
 // schema methods
 module.exports = {
-  getStats: () => {
-    return Stat.find({}).exec();
+  getStats: (user) => {
+    return Stat.find({ user }).exec();
   },
 
   postStat: (stats) => {
